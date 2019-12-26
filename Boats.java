@@ -3,16 +3,12 @@ package battleships;
 import java.util.*;		
 
 public class Boats {
-	int size;
-	int health;
 	String name;
 	LinkedList<Coordinates>  boatCoordinates = new LinkedList<Coordinates>();
 	List<Boats> boats = new ArrayList<Boats>();
 	
 
-	public Boats(int size, int health, String name, LinkedList<Coordinates> boatCoordinates) {
-		this.size = size;
-		this.health = health;
+	public Boats(String name, LinkedList<Coordinates> boatCoordinates) {
 		this.name = name;
 		this.boatCoordinates = boatCoordinates;
 	}
@@ -24,23 +20,7 @@ public class Boats {
 	public List<Boats> boats() {
 		return boats;
 	}
-	
-	public int getSize() {
-		return size;
-	}
-	
-	public void setSize(int size) {
-		this.size = size;
-	}
-	
-	public int getHealth() {
-		return health;
-	}
-	
-	public void setHealth(int health) {
-		this.health = health;
-	}
-	
+		
 	public String getName() {
 		return name;
 	}

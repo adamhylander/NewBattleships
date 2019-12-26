@@ -3,7 +3,8 @@ package battleships;
 import java.util.*;
 
 public class Board {
-	LinkedHashMap<Coordinates, Pieces> map = new LinkedHashMap<Coordinates, Pieces>(); 
+	LinkedHashMap<Coordinates, Pieces> map = new LinkedHashMap<Coordinates, Pieces>();
+	LinkedList<Boats> boats = new LinkedList<Boats>();
 	final int size = 10;
 	final int twoBoat = 2;		//Tre stycken
 	final int threeBoat = 3;	//Två stycken
@@ -28,6 +29,8 @@ public class Board {
 			}
 		K++;
 		}
+		
+		
 	
 	}
 	
@@ -60,8 +63,9 @@ public class Board {
 		char yCoord = coordinates.charAt(0);
 		int xCoord = coordinates.charAt(1);
 		
-		char hashtag = '#';
-		Pieces boatPiece = new Pieces(hashtag);
+		Pieces boatPiece = new Pieces('#');
+		
+		LinkedList<Coordinates> testList = new LinkedList<Coordinates>(); 
 		
 		if (xOry == true) { 
 			int boatLength = size + xCoord; 
@@ -75,11 +79,12 @@ public class Board {
 					
 					if((checkKeys.charAt(0) == yCoord) && (keys.toString().charAt(1) == xCoord)) {
 						Coordinates replaceCoords = new Coordinates(checkKeys);
-						map.put(replaceCoords, boatPiece);
+						map.put(new Coordinates (checkKeys), boatPiece);
 						xCoord++;
+						
+						testList.add(new Coordinates (checkKeys));
+						
 					}
-					
-					checkKeys = "";	
 				}
 			
 		}else { 
@@ -99,8 +104,6 @@ public class Board {
 					yCoord++;
 					lengthCounter++;
 				}
-				
-				checkKeys = "";	
 			}
 		
 	}
@@ -180,7 +183,7 @@ public class Board {
 					
 				}
 				
-				if(yCoordStart == (char) (yCoord + size + 2)) {
+				if(yCoordStart == (char) (yCoord + size + 1)) {
 					break;
 				}
 			}
@@ -204,14 +207,18 @@ public class Board {
 		Scanner scan = new Scanner(System.in);
 		
 		System.out.println("Now it is time for Player 1 to place his boats");
-		System.out.println("Where would you like to place the 5 boat?");
+		
+		System.out.println("What would you like to the name the 5 boat?");
+		String fiveName = scan.nextLine();
+		
+		System.out.println("Where would you like to place " + fiveName + "?");
 		String five = scan.nextLine();
 		
-		System.out.println("horizontal or vertical? Answer 'h' or 'v'");
+		System.out.println("h/v?");
 		String fivePosition = scan.nextLine();
 		
 		while (checkBoard(five, position(fivePosition), fiveBoat) != true) {
-			System.out.println("Where would you like to place the 5 boat?");
+			System.out.println("Where would you like to place " + fiveName + "?");
 			five = scan.nextLine();
 			
 			System.out.println("h/v?");
@@ -225,14 +232,17 @@ public class Board {
 		int counter = 0;
 		
 		while(counter != 2) {
-			System.out.println("Where would you like to place the 4 boat?");
+			System.out.println("What would you like to the name the 4 boat?");
+			String fourName = scan.nextLine();
+			
+			System.out.println("Where would you like to place " + fourName + "?");
 			String four = scan.nextLine();
 		
 			System.out.println("h/v?");
 			String fourPosition = scan.nextLine();
 			
 			while (checkBoard(four, position(fourPosition), fourBoat) != true) {
-				System.out.println("Where would you like to place the 4 boat?");
+				System.out.println("Where would you like to place " + fourName + "?");
 				four = scan.nextLine();
 			
 				System.out.println("h/v?");
@@ -247,14 +257,17 @@ public class Board {
 		counter = 0;
 		
 		while(counter != 2) {
-			System.out.println("Where would you like to place the 3 boat?");
+			System.out.println("What would you like to the name the 3 boat?");
+			String threeName = scan.nextLine();
+			
+			System.out.println("Where would you like to place " + threeName + "?");
 			String three = scan.nextLine();
 		
 			System.out.println("h/v?");
 			String threePosition = scan.nextLine();
 			
 			while (checkBoard(three, position(threePosition), threeBoat) != true) {
-				System.out.println("Where would you like to place the 3 boat?");
+				System.out.println("Where would you like to place " + threeName + "?");
 				three = scan.nextLine();
 			
 				System.out.println("h/v?");
@@ -269,14 +282,17 @@ public class Board {
 		counter = 0;
 		
 		while(counter != 3) {
-			System.out.println("Where would you like to place the 2 boat?");
+			System.out.println("What would you like to the name the 2 boat?");
+			String twoName = scan.nextLine();
+			
+			System.out.println("Where would you like to place " + twoName + "?");
 			String two = scan.nextLine();
 		
 			System.out.println("h/v?");
 			String twoPosition = scan.nextLine();
 			
 			while (checkBoard(two, position(twoPosition), twoBoat) != true) {
-				System.out.println("Where would you like to place the 2 boat?");
+				System.out.println("Where would you like to place " + twoName + "?");
 				two = scan.nextLine();
 			
 				System.out.println("h/v?");
@@ -290,6 +306,14 @@ public class Board {
 		
 		scan.close();
 		
+	}
+	
+	public void testPlacement() {
+		Scanner scan = new Scanner(System.in);
+		int sizeAndHealth = 5;
+		String boatName = null;
+		
+		System.out.println("What would you like to name the boat?");
 	}
 	
 	public void computerPlaceBoats() {

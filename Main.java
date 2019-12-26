@@ -71,11 +71,11 @@ public class Main {
 		playerOneBoard.placeBoats();
 		playerOneEnemyBoard.makeBoard();
 		
-		Board playerTwoBoard = new Board();
-		Board playerTwoEnemyBoard = new Board();
-		playerTwoBoard.makeBoard();
-		playerTwoBoard.placeBoats();
-		playerTwoEnemyBoard.makeBoard();
+//		Board playerTwoBoard = new Board();
+//		Board playerTwoEnemyBoard = new Board();
+//		playerTwoBoard.makeBoard();
+//		playerTwoBoard.placeBoats();
+//		playerTwoEnemyBoard.makeBoard();
 		
 		
 	}
