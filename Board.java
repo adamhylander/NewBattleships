@@ -5,39 +5,22 @@ import java.util.*;
 public class Board {
 	LinkedHashMap<Coordinates, Pieces> map = new LinkedHashMap<Coordinates, Pieces>();
 	LinkedList<Boats> playerBoatList = new LinkedList<Boats>();
-	final int size = 10;
-	final int destroyerSize = 2;		//Tre stycken
-	final int cruiserSize = 3;			//Två stycken
-	final int battleshipSize = 4;		//Två stycken
-	final int carrierSize = 5;			//En stycken
+	final int boardSize = 10;
 	Scanner scan = new Scanner(System.in);
 	
-	public void initiateBoatList() {
-		Boats.addBoat(new Boats("Carrier", carrierSize, null));
-		Boats.addBoat(new Boats("Battleship 1", battleshipSize, null)); 
-		Boats.addBoat(new Boats("Battleship 2", battleshipSize, null)); 
-		Boats.addBoat(new Boats("Cruiser 1", cruiserSize, null)); 
-		Boats.addBoat(new Boats("Cruiser 2", cruiserSize, null)); 
-		Boats.addBoat(new Boats("Destroyer 1", destroyerSize, null)); 
-		Boats.addBoat(new Boats("Destroyer 2", destroyerSize, null));
-		Boats.addBoat(new Boats("Destroyer 3", destroyerSize, null));
-	}
-	
 	public void makeBoard() {
-		
-		int size = 10;
 		char K = 'A';
 		String keys = "";
 		
-		for (int yAxis = 0; yAxis < size; yAxis++) {
+		for (int yAxis = 0; yAxis < boardSize; yAxis++) {
 			
-			for (int xAxis = 0; xAxis < size; xAxis++) {
+			for (int xAxis = 0; xAxis < boardSize; xAxis++) {
 				keys = "" + K + xAxis;
 				map.put(new Coordinates(keys), new Pieces ('~'));
 			}
 		K++;
 		}
-	
+		placeBoats();
 	}
 	
 	public void printBoard() {
@@ -101,7 +84,7 @@ public class Board {
 				
 				if((checkKeys.charAt(0) == yCoord) && (keys.toString().charAt(1) == xCoord)) {
 					map.put(new Coordinates (checkKeys), boatPiece);
-					boatCoordinates.add(new Coordinates (checkKeys));
+					boatCoordinates.add(new Coordinates (checkKeys)); 
 					yCoord++;
 					lengthCounter++;
 				}
@@ -109,8 +92,7 @@ public class Board {
 		
 		}
 
-		playerBoatList.add(new Boats(name, size, boatCoordinates));
-		
+		playerBoatList.add(new Boats(name, size, boatCoordinates));	
 	}
 	
 	public boolean checkBoard(String coordinates, boolean alignment, int size) {
@@ -216,7 +198,7 @@ public class Board {
 	}
 	
 	public void placeBoats() {
-		for(Boats boats : Boats.boats()) {
+		for(Boats boats : Boats.boats) {
 			System.out.println("Where would you like to place " + boats.getName() + "?");
 			String boatPosition = scan.nextLine();
 			
@@ -238,8 +220,8 @@ public class Board {
 		
 	}
 	
-	public void computerPlaceBoats() {		
-		for(Boats boats : Boats.boats()) {
+	public void computerPlaceBoats() {
+		for(Boats boats : Boats.boats) {
 			String boatPosition = getRandomCoordinate();
 			boolean boatAlignment = computerAlignment();
 			
