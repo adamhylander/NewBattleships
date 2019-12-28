@@ -28,10 +28,6 @@ public class Boats {
 		return boats;
 	}
 	
-	public static LinkedList<Boats> placeholder() {
-		return boats;
-	}
-	
 	public String toString() {
 		if(this.boatCoordinates == null) {
 			return ("Name: " + this.name + ", Size: " + this.size);	
