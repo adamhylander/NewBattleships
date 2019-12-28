@@ -25,9 +25,9 @@ public class Main {
 				
 				case 2:
 					Board computerBoard = new Board();
+					computerBoard.initiateBoatList();
 					computerBoard.makeBoard();
 					computerBoard.computerPlaceBoats();
-					computerBoard.printBoard();
 					
 				break;
 			
@@ -46,7 +46,7 @@ public class Main {
 				break;
 				
 				default:
-					System.out.println("Please type a number u dumbo");
+					System.out.println("Please type another number u dumbo");
 				break;
 			}
 			
@@ -55,26 +55,23 @@ public class Main {
 	
 	public void runGame() {
 		
-		int playerOneHealth = 25;
-		int playerTwoHealth = 25;
-		
 //		while(!speletslut) {
 //			Player next = //ta reda på vems tur det är
 //			for(Player p : players) {
 //				next.runTurn(p);
 //			}
 //		}
-		
 		Board playerOneBoard = new Board();
 		Board playerOneEnemyBoard = new Board();
+		playerOneBoard.initiateBoatList();
 		playerOneBoard.makeBoard();
 		playerOneBoard.placeBoats();
-		playerOneEnemyBoard.makeBoard();
+//		playerOneEnemyBoard.makeBoard();
 		
-//		Board playerTwoBoard = new Board();
+		Board playerTwoBoard = new Board();
 //		Board playerTwoEnemyBoard = new Board();
-//		playerTwoBoard.makeBoard();
-//		playerTwoBoard.placeBoats();
+		playerTwoBoard.makeBoard();
+		playerTwoBoard.placeBoats();
 //		playerTwoEnemyBoard.makeBoard();
 		
 		
