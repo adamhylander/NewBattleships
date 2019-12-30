@@ -1,7 +1,6 @@
 package battleships;
 
 import java.util.*;
-import java.io.*;
 
 public class Game {
 	String randomCoordinate;
@@ -9,14 +8,13 @@ public class Game {
 	int turnCounter = 1;
 	Pieces miss = new Pieces('O');
 	Pieces hit = new Pieces('X');
-	int a = 0;
 	Scanner scan = new Scanner(System.in);
 	LinkedList<Player> players = new LinkedList<Player>();
 	
 	public void PvP() {
 		System.out.println("How many would like to play? Max is 4");
-		int amountOfPlayersScan = scan.nextInt();
-		amountOfPlayers = setAmountOfPlayers(amountOfPlayersScan);
+		int input = scan.nextInt();
+		amountOfPlayers = input;
 		createPlayer(amountOfPlayers);
 		playerPlaceBoats();
 		while(amountOfPlayers > 1) {
@@ -31,8 +29,8 @@ public class Game {
 	public void PvE() {
 		createPlayer(1);
 		System.out.println("How many bots do you want to play against? Max is 3");
-		int amountOfPlayersScan = scan.nextInt();
-		amountOfPlayers = setAmountOfPlayers(amountOfPlayersScan) + 1;
+		int input = scan.nextInt();
+		amountOfPlayers = input + 1;
 		for(int i = 2; i <= amountOfPlayers; i++) {
 			String datorNamn = "Göran " + (i - 1);
 			Player computerPlayer = new Player(i, 0, datorNamn, null, null,null); 
@@ -356,9 +354,7 @@ public class Game {
 		System.out.println("\n"); 
 	}
 	
-	public int setAmountOfPlayers(int amountOfPlayers) {
-		return amountOfPlayers;
-	}
+	
 	
 	public String getRandomCoordinate(){
 		double xmin = 0;
