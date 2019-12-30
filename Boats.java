@@ -11,13 +11,13 @@ public class Boats {
 	int size;
 	LinkedList<Coordinates>  boatCoordinates;
 	static List<Boats> boats = Arrays.asList(
-//			(new Boats("Carrier", carrierSize, null)), 
-//			(new Boats("Battleship 1", battleshipSize, null)), 
-//			(new Boats("Battleship 2", battleshipSize, null)),
-//			(new Boats("Cruiser 1", cruiserSize, null)),
-//			(new Boats("Cruiser 2", cruiserSize, null)),
-//			(new Boats("Destroyer 1", destroyerSize, null)),
-//			(new Boats("Destroyer 2", destroyerSize, null)), 
+			(new Boats("Carrier", carrierSize, null)), 
+			(new Boats("Battleship 1", battleshipSize, null)), 
+			(new Boats("Battleship 2", battleshipSize, null)),
+			(new Boats("Cruiser 1", cruiserSize, null)),
+			(new Boats("Cruiser 2", cruiserSize, null)),
+			(new Boats("Destroyer 1", destroyerSize, null)),
+			(new Boats("Destroyer 2", destroyerSize, null)), 
 			(new Boats("Destroyer 3", destroyerSize, null)));
 
 	public Boats(String name, int size, LinkedList<Coordinates> boatCoordinates) {

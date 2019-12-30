@@ -19,8 +19,8 @@ public class Coordinates {
 		if(!(obj instanceof Coordinates)) {
 			return false;
 		}
-		Coordinates objWord = (Coordinates) obj;
-		if(this.text.equals(objWord.text)) {
+		Coordinates coordinates = (Coordinates) obj;
+		if(this.text.equals(coordinates.text)) {
 			return true;
 		}
 			return false;

@@ -26,8 +26,8 @@ public class Pieces {
 		if(!(obj instanceof Pieces)) {
 			return false;
 		}
-		Pieces objWord = (Pieces) obj;
-		if(this.text == (objWord.text)) {
+		Pieces pieces = (Pieces) obj;
+		if(this.text == (pieces.text)) {
 			return true;
 		}
 			return false;

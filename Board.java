@@ -193,7 +193,7 @@ public class Board {
 		if(coordinates.charAt(1) < '0' || coordinates.charAt(1) > '9') {
 			return false;
 		}
-		if(String.valueOf(coordinates).length() > 2) {
+		if(String.valueOf(coordinates).length() != 2) {
 			return false;
 		}
 		return true;
@@ -212,6 +212,7 @@ public class Board {
 	}
 	
 	public void placeBoats() {
+		printBoard();
 		for(Boats boats : Boats.boats) {
 			System.out.println("Where would you like to place the " + boats.getName() + "?");
 			String boatPosition = scan.nextLine();

@@ -3,6 +3,7 @@ package battleships;
 import java.util.*;
 
 public class Player {
+	int hits;
 	int turn;
 	int health;
 	String nickname;
@@ -10,10 +11,11 @@ public class Player {
 	LinkedHashMap<Coordinates, Pieces> playerBoard;
 	LinkedHashMap<Coordinates, Pieces> enemyBoard;
 	
-	public Player(int turn, int health, String nickname, LinkedHashMap<Coordinates, Pieces> playerBoard, LinkedHashMap<Coordinates, Pieces> enemyBoard, LinkedList<Boats> playerBoats) {
+	public Player(int turn, int health, String nickname, int hits, LinkedHashMap<Coordinates, Pieces> playerBoard, LinkedHashMap<Coordinates, Pieces> enemyBoard, LinkedList<Boats> playerBoats) {
 		this.turn = turn;
 		this.health = health;
 		this.nickname = nickname;
+		this.hits = hits;
 		this.playerBoats = playerBoats;
 		this.playerBoard = playerBoard;
 		this.enemyBoard = enemyBoard;
@@ -37,6 +39,14 @@ public class Player {
 	
 	public void setTurn(int turn) {
 		this.turn = turn;
+	}
+	
+	public int getHits() {
+		return hits;
+	}
+	
+	public void setHits(int hits) {
+		this.hits = hits;
 	}
 	
 	public LinkedList<Boats> getBoats() {
@@ -64,6 +74,6 @@ public class Player {
 	}
 	
 	public String toString() {
-		return ("Name: " + this.nickname + ", Health: " + this.health + ", Turn:" + this.turn);
+		return ("Name: " + this.nickname + ", Health: " + this.health + ", Turn: " + this.turn);
 	}
 }

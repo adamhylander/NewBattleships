@@ -6,11 +6,13 @@ public class Game {
 	String randomCoordinate;
 	int amountOfPlayers;
 	int turnCounter = 1;
+	int hitCounter = 0;
+	int totalHealth = 0;
 	Pieces miss = new Pieces('O');
 	Pieces hit = new Pieces('X');
 	Scanner scan = new Scanner(System.in);
 	LinkedList<Player> players = new LinkedList<Player>();
-	LinkedList<Player> defeatedPlayers = new LinkedList<Player>();
+	List<Player> defeatedPlayers = new ArrayList<Player>();
 	
 	public void PvP() {
 		System.out.println("How many would like to play? Max is 4");
@@ -18,6 +20,9 @@ public class Game {
 		amountOfPlayers = input;
 		createPlayer(amountOfPlayers);
 		playerPlaceBoats();
+		for(Player p : players) {
+			totalHealth = p.getHealth();
+		}
 		while(amountOfPlayers > 1) {
 			PvPTurn();
 		}
@@ -38,10 +43,13 @@ public class Game {
 		amountOfPlayers = input + 1;
 		for(int i = 2; i <= amountOfPlayers; i++) {
 			String datorNamn = "Göran " + (i - 1);
-			Player computerPlayer = new Player(i, 0, datorNamn, null, null,null); 
+			Player computerPlayer = new Player(i, 0, datorNamn, hitCounter, null, null,null); 
 			players.add(computerPlayer);
 		}
 		computerPlaceBoats();
+		for(Player p : players) {
+			totalHealth = p.getHealth();
+		}
 		while(amountOfPlayers > 1) {
 			PvETurn();
 		}
@@ -59,7 +67,7 @@ public class Game {
 		for(int i = 1; i <= amountOfPlayers; i++) {
 			System.out.println("Vad ska spelare " + i + " heta?");
 			String spelarnamn = scan.next();
-			Player newPlayer = new Player(i, 0, spelarnamn, null, null,null); 
+			Player newPlayer = new Player(i, 0, spelarnamn, hitCounter, null, null,null);
 			players.add(newPlayer);
 		}
 	}
@@ -112,6 +120,22 @@ public class Game {
 	}
 	
 	public void PvPTurn() {
+		if(turnCounter == 1) {
+			for(Player p : players) {
+				float hitDenominator = (float)(p.getHits());
+				float hitNominator = (float) (amountOfPlayers * 100);
+				int hitQuota = (int) (100 - hitNominator/hitDenominator);
+				
+				float healthDenominator = (float)(totalHealth);
+				float healthNominator = (float) (p.getHealth() * 100);
+				int healthQuota = (int) (healthNominator/healthDenominator);
+			
+				System.out.println(p.getNickname() + "'s Accuracy: " + hitQuota + "%");
+				System.out.println(p.getNickname() + "'s Health: " + healthQuota + "%\n");
+			}
+			System.out.println();
+		}
+		
 		for(Player p : players) {	
 			if(p.getTurn() == turnCounter) {
 				System.out.println(p.getNickname() + "'s turn! \n");
@@ -135,6 +159,20 @@ public class Game {
 	}
 	
 	public void PvETurn() {
+		for(Player p : players) {
+			float hitDenominator = (float)(p.getHits());
+			float hitNominator = (float) (amountOfPlayers * 100);
+			int hitQuota = (int) (100 - hitNominator/hitDenominator);
+				
+			float healthDenominator = (float)(totalHealth);
+			float healthNominator = (float) (p.getHealth() * 100);
+			int healthQuota = (int) (healthNominator/healthDenominator);
+			
+			System.out.println(p.getNickname() + "'s Accuracy: " + hitQuota + "%");
+			System.out.println(p.getNickname() + "'s Health: " + healthQuota + "%\n");
+			System.out.println();
+		}
+		
 		for(Player p : players) {	
 			if(p.getTurn() == 1) {
 				System.out.println(p.getNickname() + "'s turn! \n");
@@ -161,7 +199,6 @@ public class Game {
 		}
 		
 		turnCounter = 1;
-		
 		
 	}
 	
@@ -195,6 +232,7 @@ public class Game {
 						p.getEnemyBoard().put(playerShot, hit);
 						p.setHealth(p.getHealth() - 1);
 						newCoordinates.add(playerShot);
+						shotHit(1);
 					}
 				}
 				for(Coordinates coord : newCoordinates) {
@@ -221,6 +259,7 @@ public class Game {
 				players.remove(p);
 				defeatedPlayers.add(p);
 				amountOfPlayers--;
+				shotHit(amountOfPlayers);
 				return false;
 			}
 			
@@ -260,6 +299,7 @@ public class Game {
 					p.getEnemyBoard().put(botShot, hit);
 					p.setHealth(p.getHealth() - 1);
 					newCoordinates.add(botShot);
+					shotHit(1);
 				}
 			}
 			for(Coordinates coord : newCoordinates) {
@@ -293,13 +333,22 @@ public class Game {
 			System.out.println("Miss! \n");
 			p.getPlayerBoard().put(botShot, miss);
 			p.getEnemyBoard().put(botShot, miss);
+			shotHit(amountOfPlayers);
 			return false;
 		}
 		
 		return true;
 	}
 
-	public void printBoard() {
+	public void shotHit(int amount) {
+		for(Player p : players) {
+			if(p.getTurn() == turnCounter) {
+				p.setHits(p.getHits() + amount);
+			}
+		}
+	}
+	
+ 	public void printBoard() {
 		for(Player p : players) {
 			if(p.getTurn() == turnCounter) {
 				System.out.println(p.getNickname() + "'s Board");
@@ -395,7 +444,7 @@ public class Game {
 		if(coordinates.charAt(1) < '0' || coordinates.charAt(1) > '9') {
 			return false;
 		}
-		if(String.valueOf(coordinates).length() > 2) {
+		if(String.valueOf(coordinates).length() != 2) {
 			return false;
 		}
 		return true;
