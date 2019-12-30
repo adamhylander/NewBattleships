@@ -122,7 +122,7 @@ public class Game {
 	public void PvPTurn() {
 		if(turnCounter == 1) {
 			for(Player p : players) {
-				float hitDenominator = (float)(p.getHits());
+				float hitDenominator = (float)(p.getShots());
 				float hitNominator = (float) (amountOfPlayers * 100);
 				int hitQuota = (int) (100 - hitNominator/hitDenominator);
 				
@@ -160,7 +160,7 @@ public class Game {
 	
 	public void PvETurn() {
 		for(Player p : players) {
-			float hitDenominator = (float)(p.getHits());
+			float hitDenominator = (float)(p.getShots());
 			float hitNominator = (float) (amountOfPlayers * 100);
 			int hitQuota = (int) (100 - hitNominator/hitDenominator);
 				
@@ -232,7 +232,7 @@ public class Game {
 						p.getEnemyBoard().put(playerShot, hit);
 						p.setHealth(p.getHealth() - 1);
 						newCoordinates.add(playerShot);
-						shotHit(1);
+						shotCounter();
 					}
 				}
 				for(Coordinates coord : newCoordinates) {
@@ -259,7 +259,6 @@ public class Game {
 				players.remove(p);
 				defeatedPlayers.add(p);
 				amountOfPlayers--;
-				shotHit(amountOfPlayers);
 				return false;
 			}
 			
@@ -267,6 +266,7 @@ public class Game {
 				System.out.println("Miss! \n");
 				p.getPlayerBoard().put(playerShot, miss);
 				p.getEnemyBoard().put(playerShot, miss);
+				shotCounter();
 				return false;
 			}
 			
@@ -299,7 +299,7 @@ public class Game {
 					p.getEnemyBoard().put(botShot, hit);
 					p.setHealth(p.getHealth() - 1);
 					newCoordinates.add(botShot);
-					shotHit(1);
+					shotCounter();
 				}
 			}
 			for(Coordinates coord : newCoordinates) {
@@ -333,17 +333,17 @@ public class Game {
 			System.out.println("Miss! \n");
 			p.getPlayerBoard().put(botShot, miss);
 			p.getEnemyBoard().put(botShot, miss);
-			shotHit(amountOfPlayers);
+			shotCounter();
 			return false;
 		}
 		
 		return true;
 	}
 
-	public void shotHit(int amount) {
+	public void shotCounter() {
 		for(Player p : players) {
 			if(p.getTurn() == turnCounter) {
-				p.setHits(p.getHits() + amount);
+				p.setShots(p.getShots() + 1);
 			}
 		}
 	}
