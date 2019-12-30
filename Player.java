@@ -4,23 +4,67 @@ import java.util.*;
 import java.io.*;
 
 public class Player {
-	int health = 25;
+	int turn;
+	int health;
 	String nickname;
-	LinkedList<Boats> boats;
-	LinkedList<Player> players = new LinkedList<Player>();
-	Scanner scan = new Scanner(System.in);
+	LinkedList<Boats> playerBoats;
+	LinkedHashMap<Coordinates, Pieces> playerBoard;
+	LinkedHashMap<Coordinates, Pieces> enemyBoard;
 	
-	public Player(int health, String nickname, LinkedList<Boats> boats) {
+	public Player(int turn, int health, String nickname, LinkedHashMap<Coordinates, Pieces> playerBoard, LinkedHashMap<Coordinates, Pieces> enemyBoard, LinkedList<Boats> playerBoats) {
+		this.turn = turn;
 		this.health = health;
 		this.nickname = nickname;
-		this.boats = boats;
+		this.playerBoats = playerBoats;
+		this.playerBoard = playerBoard;
+		this.enemyBoard = enemyBoard;
 	}
 	
-	public void createPlayer(int amountOfPlayers) {
-		for(int i = 1; i <= amountOfPlayers; i++) {
-			System.out.println("Vad ska spelare " + i + "heta?");
-			String spelarnamn = scan.nextLine();
-			
-		}
+	public String getNickname() {
+		return nickname;
+	}
+	
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	public int getHealth() {
+		return health;
+	}
+
+	public int getTurn() {
+		return turn;
+	}
+	
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+	
+	public LinkedList<Boats> getBoats() {
+		return playerBoats;
+	}
+	
+	public void setBoats(LinkedList<Boats> b) {
+		this.playerBoats = b;
+	}
+	
+	public LinkedHashMap<Coordinates, Pieces> getPlayerBoard() {
+		return playerBoard;
+	}
+	
+	public void setPlayerBoard (LinkedHashMap<Coordinates,Pieces> playerBoard) {
+		this.playerBoard = playerBoard;
+	}
+	
+	public LinkedHashMap<Coordinates, Pieces> getEnemyBoard() {
+		return enemyBoard;
+	}
+	
+	public void setEnemyBoard (LinkedHashMap<Coordinates,Pieces> enemyBoard) {
+		this.enemyBoard = enemyBoard;
+	}
+	
+	public String toString() {
+		return ("Name: " + this.nickname + ", Health: " + this.health + ", Turn:" + this.turn);
 	}
 }

@@ -6,28 +6,28 @@ public class Main {
 	static Scanner scan = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		Main demo = new Main();
-		demo.menu();
+		Main main = new Main();
+		main.menu();
 	}
 	
 	public void menu() {
-		System.out.println("     Battleships     ");
-		System.out.println("=====================");
 		
 		int a = 0;
 		
-		while (a != 4) {
+		while (a != 5) {
+			System.out.println("     Battleships     ");
+			System.out.println("=====================");
+			
 			a = showMenu();
 			switch(a) {
 				case 1:	
-					PvE();
+					Game vsFriend = new Game();
+					vsFriend.PvP();
 				break;
 				
 				case 2:
-					Board computerBoard = new Board();
-					computerBoard.makeBoard();
-					computerBoard.computerPlaceBoats();
-					
+					Game vsBot = new Game();
+					vsBot.PvE();
 				break;
 			
 				case 3:
@@ -35,8 +35,16 @@ public class Main {
 				break;
 				
 				case 4:
+					System.out.println("\n");
 					System.out.println("Rules:");
-					System.out.println("1. Type coordinates like this A9");
+					System.out.println("1. Type coordinates with the yAxis coordinate first followed \n"
+									+  "by the xAxis coordinate. Should look like this 'A0'\n");
+					System.out.println("2. Your boat will be placed, depending on whether \n"
+									+  "you placed it horizontally or vertically, from the \n"
+									+  "leftmost respectively the upmost coordinate\n");
+					System.out.println("3. No scrolling upwards to see the other player's board");
+					System.out.println("4. Bots will fire randomly");
+					System.out.println("\n");
 				break;
 			
 				case 5:
@@ -52,32 +60,8 @@ public class Main {
 		}
 	}
 	
-	public void PvE() {
-		System.out.println("How many would like to play? Max is 4");
-		int amountOfPlayers = scan.nextInt();
-		
-		while(amountOfPlayers < '1' && amountOfPlayers > '4') {
-			System.out.println("How many would like to play?");
-			amountOfPlayers = scan.nextInt();
-		}
-		
-//		while(!speletslut) {
-//			Player next = //ta reda på vems tur det är
-//			for(Player p : players) {
-//				next.runTurn(p);
-//			}
-//		}
-		Board playerOneBoard = new Board();
-		playerOneBoard.makeBoard();
-		
-		Board playerTwoBoard = new Board();
-		playerTwoBoard.makeBoard();
-		
-		
-	}
-	
 	private static int showMenu() {
-		System.out.println("1. Play Versus Friend");
+		System.out.println("1. Play Versus Friends");
 		System.out.println("2. Play Versus Bot");
 		System.out.println("3. Show Highscores");
 		System.out.println("4. Rules");

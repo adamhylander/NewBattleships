@@ -5,6 +5,7 @@ import java.util.*;
 public class Board {
 	LinkedHashMap<Coordinates, Pieces> map = new LinkedHashMap<Coordinates, Pieces>();
 	LinkedList<Boats> playerBoatList = new LinkedList<Boats>();
+	int health = 0;
 	final int boardSize = 10;
 	Scanner scan = new Scanner(System.in);
 	
@@ -20,7 +21,6 @@ public class Board {
 			}
 		K++;
 		}
-		placeBoats();
 	}
 	
 	public void printBoard() {
@@ -67,6 +67,7 @@ public class Board {
 					if((checkKeys.charAt(0) == yCoord) && (keys.toString().charAt(1) == xCoord)) {
 						map.put(new Coordinates (checkKeys), boatPiece);
 						boatCoordinates.add(new Coordinates (checkKeys));
+						health++;
 						xCoord++;
 					}
 				}
@@ -85,6 +86,7 @@ public class Board {
 				if((checkKeys.charAt(0) == yCoord) && (keys.toString().charAt(1) == xCoord)) {
 					map.put(new Coordinates (checkKeys), boatPiece);
 					boatCoordinates.add(new Coordinates (checkKeys)); 
+					health++;
 					yCoord++;
 					lengthCounter++;
 				}
@@ -93,6 +95,14 @@ public class Board {
 		}
 
 		playerBoatList.add(new Boats(name, size, boatCoordinates));	
+	}
+	
+	public LinkedList<Boats> getPlayerBoatList() {
+		return playerBoatList;
+	}
+	
+	public LinkedHashMap<Coordinates, Pieces> getPlayerHashMap() {
+		return map;
 	}
 	
 	public boolean checkBoard(String coordinates, boolean alignment, int size) {
@@ -197,9 +207,13 @@ public class Board {
 		}
 	}
 	
+	public int getHealth() {
+		return health;
+	}
+	
 	public void placeBoats() {
 		for(Boats boats : Boats.boats) {
-			System.out.println("Where would you like to place " + boats.getName() + "?");
+			System.out.println("Where would you like to place the " + boats.getName() + "?");
 			String boatPosition = scan.nextLine();
 			
 			System.out.println("h/v?");
@@ -215,25 +229,20 @@ public class Board {
 			addBoatToBoard(boatPosition, position(boatAlignment), boats.getSize(), boats.getName());	
 			printBoard();
 		}
-		
-		Boats.printBoatList(playerBoatList);
-		
 	}
 	
 	public void computerPlaceBoats() {
 		for(Boats boats : Boats.boats) {
 			String boatPosition = getRandomCoordinate();
-			boolean boatAlignment = computerAlignment();
+			boolean boatAlignment = getRandomAlignment();
 			
 			while((checkBoard(boatPosition, boatAlignment, boats.getSize()) != true)) {
 				boatPosition = getRandomCoordinate();
-				boatAlignment = computerAlignment();
+				boatAlignment = getRandomAlignment();
 			}
 			
 			addBoatToBoard(boatPosition, boatAlignment, boats.getSize(), boats.getName());
 		}
-		printBoard();
-		Boats.printBoatList(playerBoatList);
 	}
 	
 	public String getRandomCoordinate(){
@@ -250,7 +259,7 @@ public class Board {
 		return coordinate;
 	}
 	
-	public boolean computerAlignment() {
+	public boolean getRandomAlignment() {
 		return Math.random() < 0.5;
 	}
 }
