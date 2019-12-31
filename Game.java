@@ -3,10 +3,8 @@ package battleships;
 import java.util.*;
 
 public class Game {
-	String randomCoordinate;
 	int amountOfPlayers;
 	int turnCounter = 1;
-	int hitCounter = 0;
 	int totalHealth = 0;
 	int amountOfTurns = 0;
 	Pieces miss = new Pieces('O');
@@ -20,12 +18,21 @@ public class Game {
 		System.out.println("How many would like to play? Max is 4");
 		int input = scan.nextInt();
 		amountOfPlayers = input;
-		boardMethods.makeBoard();
 		createPlayer(amountOfPlayers);
-		playerPlaceBoats();
+		Boats.printBoatList(Boats.boats);
 		for(Player p : players) {
+			System.out.println("Time for " + p.getNickname() + " to place his boats" + "\n");
+			System.out.println("Randomize board? y/n");
+			String answer = scan.next();
+			if(answer.equals("y")) {
+				computerPlaceBoats(p);
+			}
+			else {
+				playerPlaceBoats(p);
+			}
 			totalHealth = p.getHealth();
 		}
+		printPlayerList();
 		while(amountOfPlayers > 1) {
 			PvPTurn();
 		}
@@ -44,16 +51,29 @@ public class Game {
 		System.out.println("How many bots do you want to play against? Max is 3");
 		int input = scan.nextInt();
 		amountOfPlayers = input + 1;
-		boardMethods.makeBoard();
 		for(int i = 2; i <= amountOfPlayers; i++) {
 			String datorNamn = "Göran " + (i - 1);
-			Player computerPlayer = new Player(i, 0, datorNamn, hitCounter, null, null,null); 
+			Player computerPlayer = new Player(i, 0, datorNamn, 0, null, null,null); 
 			players.add(computerPlayer);
 		}
-		computerPlaceBoats();
+		Boats.printBoatList(Boats.boats);
 		for(Player p : players) {
+			if(p.getTurn() == 1) {
+				System.out.println("Randomize board? y/n");
+				String answer = scan.next();
+				if(answer.equals("y")) {
+					computerPlaceBoats(p);
+				}
+				else {
+					playerPlaceBoats(p);
+				}
+			}
+			else {
+				computerPlaceBoats(p);
+			}
 			totalHealth = p.getHealth();
 		}
+		printPlayerList();
 		while(amountOfPlayers > 1) {
 			PvETurn();
 		}
@@ -71,65 +91,39 @@ public class Game {
 		for(int i = 1; i <= amountOfPlayers; i++) {
 			System.out.println("Vad ska spelare " + i + " heta?");
 			String spelarnamn = scan.next();
-			Player newPlayer = new Player(i, 0, spelarnamn, hitCounter, null, null,null);
+			Player newPlayer = new Player(i, 0, spelarnamn, 0, null, null,null);
 			players.add(newPlayer);
 		}
 	}
 	
-	public void playerPlaceBoats() {
-		Boats.printBoatList(Boats.boats);
-		for(Player p : players) {
-			Board playerBoard = new Board();
-			Board enemyBoard = new Board();
-			System.out.println("Time for " + p.getNickname() + " to place his boats" + "\n");
-			playerBoard.makeBoard();
-			playerBoard.placeBoats();
-			p.setBoats(playerBoard.playerBoatList);
-			p.setPlayerBoard(playerBoard.map);
-			p.setHealth(playerBoard.health);
-			enemyBoard.makeBoard();
-			p.setEnemyBoard(enemyBoard.map);
-		}
-		printPlayerList();
+	public void playerPlaceBoats(Player p) {
+		Board playerBoard = new Board();
+		Board enemyBoard = new Board();
+		playerBoard.makeBoard();
+		playerBoard.placeBoats();
+		p.setBoats(playerBoard.playerBoatList);
+		p.setPlayerBoard(playerBoard.map);
+		p.setHealth(playerBoard.health);
+		enemyBoard.makeBoard();
+		p.setEnemyBoard(enemyBoard.map);
 	}
 	
-	public void computerPlaceBoats() {
-		Boats.printBoatList(Boats.boats);
-		for(Player p : players) {
-			if(p.getTurn() == 1) {
-				Board playerBoard = new Board();
-				Board enemyBoard = new Board();
-				System.out.println("Time for " + p.getNickname() + " to place his boats" + "\n");
-				playerBoard.makeBoard();
-				playerBoard.placeBoats();
-				p.setBoats(playerBoard.playerBoatList);
-				p.setPlayerBoard(playerBoard.map);
-				p.setHealth(playerBoard.health);
-				enemyBoard.makeBoard();
-				p.setEnemyBoard(enemyBoard.map);
-			}
-			else {
-				Board board = new Board();
-				Board enemyBoard = new Board();
-				board.makeBoard();
-				enemyBoard.makeBoard();
-				p.setEnemyBoard(enemyBoard.map);
-				board.computerPlaceBoats();
-				p.setBoats(board.playerBoatList);
-				p.setPlayerBoard(board.map);
-				p.setHealth(board.health);
-			}
-		}
-		printPlayerList();
+	public void computerPlaceBoats(Player p) {
+		Board board = new Board();
+		Board enemyBoard = new Board();
+		board.makeBoard();
+		enemyBoard.makeBoard();
+		p.setEnemyBoard(enemyBoard.map);
+		board.computerPlaceBoats();
+		p.setBoats(board.playerBoatList);
+		p.setPlayerBoard(board.map);
+		p.setHealth(board.health);
 	}
 	
 	public void PvPTurn() {
-		if(turnCounter == 1) {
+		if(turnCounter == 1 && amountOfTurns > 0) {
 			for(Player p : players) {
-				if(p.getShots() == 0) {
-				break;
-				}
-				int hitQuota = (int) (100 - (100 * (amountOfPlayers - 1) * amountOfTurns)/p.getShots());
+				int hitQuota = (100 - (100 * (amountOfPlayers - 1) * amountOfTurns)/p.getShots());
 				
 				float healthDenominator = (float)(totalHealth);
 				float healthNominator = (float) (p.getHealth() * 100);
@@ -165,8 +159,9 @@ public class Game {
 	}
 	
 	public void PvETurn() {
+		if(amountOfTurns > 0) {
 		for(Player p : players) {
-			int hitQuota = (int) (100 - (100 * (amountOfPlayers - 1) * amountOfTurns)/p.getShots());
+			int hitQuota = (100 - (100 * (amountOfPlayers - 1) * amountOfTurns)/p.getShots());
 				
 			float healthDenominator = (float)(totalHealth);
 			float healthNominator = (float) (p.getHealth() * 100);
@@ -175,6 +170,7 @@ public class Game {
 			System.out.println(p.getNickname() + "'s Accuracy: " + hitQuota + "%");
 			System.out.println(p.getNickname() + "'s Health: " + healthQuota + "%\n");
 			System.out.println();
+		}
 		}
 		
 		for(Player p : players) {	
