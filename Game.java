@@ -145,7 +145,7 @@ public class Game {
 		
 		for(Player p : players) {
 			if(p.getTurn() != turnCounter) {
-				while (shootPvP(p) == true);
+				while (playerAim(p) == true);
 			}
 		}
 		
@@ -183,7 +183,7 @@ public class Game {
 		
 		for(Player p : players) {	
 			if(p.getTurn() != 1) {
-				while (shootPvP(p) == true);
+				while (playerAim(p) == true);
 			}
 		}
 		
@@ -192,7 +192,7 @@ public class Game {
 		while(!(turnCounter > amountOfPlayers)) {
 			for(Player p : players) { 	
 				if(p.getTurn() != turnCounter) {
-					while (shootPvE(p) == true);
+					while (computerAim(p) == true);
 				}	
 			}
 			turnCounter++;
@@ -203,36 +203,53 @@ public class Game {
 		
 	}
 	
-	public boolean shootPvP(Player p) {
+	public boolean playerAim(Player p) {
+		System.out.println("Where would you like to shoot " + p.getNickname() + "?");
+		String playerAim = scan.next();
+		System.out.println();
+		while(onBoard(playerAim) == false) {
+			System.out.println("Please fire on the board");
+			playerAim = scan.next();
+			System.out.println();
+		}
+		Coordinates playerShot = new Coordinates(playerAim);
+		while(p.getEnemyBoard().get(playerShot).equals(miss) || p.getEnemyBoard().get(playerShot).equals(hit)) {
+			System.out.println("You have already fired there, please fire somewhere else");
+			playerAim = scan.next();
+			playerShot = new Coordinates(playerAim);
+		}
+		return shoot(p, playerShot, playerAim);
+	}
+	
+	public boolean computerAim(Player p) {
+		System.out.println("Firing at: " + p.getNickname());
+		String botAim = boardMethods.getRandomCoordinate();
+		System.out.println(botAim);
+		Coordinates botShot = new Coordinates(botAim);
+		while(p.getEnemyBoard().get(botShot).equals(miss) || p.getEnemyBoard().get(botShot).equals(hit)) {
+			botAim = boardMethods.getRandomCoordinate();
+			botShot = new Coordinates(botAim);
+			System.out.println("Refiring at: " + p.getNickname());
+			System.out.println(botAim);
+		}
+		return shoot(p, botShot, botAim);
+	}
+	
+	public boolean shoot(Player p, Coordinates shot, String aim) {
 			
 			List<Coordinates> newCoordinates = new ArrayList<Coordinates>();
 			List<Boats> newBoats = new ArrayList<Boats>();
 			
 			boolean a = false;
-		
-			System.out.println("Where would you like to shoot " + p.getNickname() + "?");
-			String playerAim = scan.next();
-			System.out.println();
-			while(onBoard(playerAim) == false) {
-				System.out.println("Please fire on the board");
-				playerAim = scan.next();
-				System.out.println();
-			}
-			Coordinates playerShot = new Coordinates(playerAim);
-			while(p.getEnemyBoard().get(playerShot).equals(miss) || p.getEnemyBoard().get(playerShot).equals(hit)) {
-				System.out.println("You have already fired there, please fire somewhere else");
-				playerAim = scan.next();
-				playerShot = new Coordinates(playerAim);
-			}
 			for (Boats boats : p.getBoats()) {
 				for(Coordinates coordinates : boats.getBoatCoordinates()) {
-					if(coordinates.equals(playerShot)) {
+					if(coordinates.equals(shot)) {
 						a = true;
 						System.out.println("Hit! \n");
-						p.getPlayerBoard().put(playerShot, hit);
-						p.getEnemyBoard().put(playerShot, hit);
+						p.getPlayerBoard().put(shot, hit);
+						p.getEnemyBoard().put(shot, hit);
 						p.setHealth(p.getHealth() - 1);
-						newCoordinates.add(playerShot);
+						newCoordinates.add(shot);
 						shotCounter();
 					}
 				}
@@ -265,8 +282,8 @@ public class Game {
 			
 			if(a == false) {
 				System.out.println("Miss! \n");
-				p.getPlayerBoard().put(playerShot, miss);
-				p.getEnemyBoard().put(playerShot, miss);
+				p.getPlayerBoard().put(shot, miss);
+				p.getEnemyBoard().put(shot, miss);
 				shotCounter();
 				return false;
 			}
@@ -275,72 +292,6 @@ public class Game {
 			
 	}
 	
-	public boolean shootPvE(Player p) {
-		List<Coordinates> newCoordinates = new ArrayList<Coordinates>();
-		List<Boats> newBoats = new ArrayList<Boats>();
-		
-		boolean a = false;
-		
-		System.out.println("Firing at: " + p.getNickname());
-		String botAim = boardMethods.getRandomCoordinate();
-		System.out.println(botAim);
-		Coordinates botShot = new Coordinates(botAim);
-		while(p.getEnemyBoard().get(botShot).equals(miss) || p.getEnemyBoard().get(botShot).equals(hit)) {
-			botAim = boardMethods.getRandomCoordinate();
-			botShot = new Coordinates(botAim);
-			System.out.println("Refiring at: " + p.getNickname());
-			System.out.println(botAim);
-		}
-		for (Boats boats : p.getBoats()) {
-			for(Coordinates coordinates : boats.getBoatCoordinates()) {
-				if(coordinates.equals(botShot)) {
-					a = true;
-					System.out.println("Hit! \n");
-					p.getPlayerBoard().put(botShot, hit);
-					p.getEnemyBoard().put(botShot, hit);
-					p.setHealth(p.getHealth() - 1);
-					newCoordinates.add(botShot);
-					shotCounter();
-				}
-			}
-			for(Coordinates coord : newCoordinates) {
-				boats.getBoatCoordinates().remove(coord);
-				boats.setSize(boats.getSize()-1);
-			}
-			
-			if(boats.getSize() == 0) {
-				newBoats.add(boats);
-				System.out.println("A bot has sunk " + p.getNickname() + "'s " + boats.getName() + "\n");
-			}
-			
-			if(a == true) {
-				break;
-			}
-		}
-		
-		for(Boats boats : newBoats) {
-			p.getBoats().remove(boats);
-		}
-		
-		if(p.getHealth() == 0) {
-			System.out.println(p.getNickname() + "'s Fleet has been destroyed! \n");
-			players.remove(p);
-			defeatedPlayers.add(p);
-			amountOfPlayers--;
-			return false;
-		}
-		
-		if(a == false) {
-			System.out.println("Miss! \n");
-			p.getPlayerBoard().put(botShot, miss);
-			p.getEnemyBoard().put(botShot, miss);
-			shotCounter();
-			return false;
-		}
-		
-		return true;
-	}
-
 	public void shotCounter() {
 		for(Player p : players) {
 			if(p.getTurn() == turnCounter) {
