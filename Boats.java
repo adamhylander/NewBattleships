@@ -9,7 +9,7 @@ public class Boats {
 	final static int carrierSize = 5;			//En stycken
 	String name;
 	int size;
-	LinkedList<Coordinates>  boatCoordinates;
+	List<Coordinates>  boatCoordinates;
 	static List<Boats> boats = Arrays.asList(
 			(new Boats("Carrier", carrierSize, null)), 
 			(new Boats("Battleship 1", battleshipSize, null)), 
@@ -47,7 +47,7 @@ public class Boats {
 		this.size = size;
 	}
 	
-	public LinkedList<Coordinates> getBoatCoordinates() {
+	public List<Coordinates> getBoatCoordinates() {
 		return boatCoordinates;
 	}
 	

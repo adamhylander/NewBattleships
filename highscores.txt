@@ -1,0 +1,9 @@
+1. Name: Adam1, Missiles Fired: 39
+2. Name: Adam2, Missiles Fired: 42
+3. Name: Adam3, Missiles Fired: 44
+4. Name: Adam4, Missiles Fired: 47
+5. Name: Adam5, Missiles Fired: 52
+6. Name: Adam6, Missiles Fired: 53
+7. Name: Adam7, Missiles Fired: 54
+8. Name: Adam8, Missiles Fired: 55
+9. Name: Adam9, Missiles Fired: 57

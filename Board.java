@@ -97,14 +97,6 @@ public class Board {
 		playerBoatList.add(new Boats(name, size, boatCoordinates));	
 	}
 	
-	public LinkedList<Boats> getPlayerBoatList() {
-		return playerBoatList;
-	}
-	
-	public LinkedHashMap<Coordinates, Pieces> getPlayerHashMap() {
-		return map;
-	}
-	
 	public boolean checkBoard(String coordinates, boolean alignment, int size) {
 		
 		char yCoordStart = (char) (coordinates.charAt(0) - 1);
@@ -205,10 +197,6 @@ public class Board {
 		}else {
 			return false;
 		}
-	}
-	
-	public int getHealth() {
-		return health;
 	}
 	
 	public void placeBoats() {
