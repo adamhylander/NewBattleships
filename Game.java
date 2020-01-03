@@ -97,23 +97,19 @@ public class Game {
 	}
 	
 	public void playerPlaceBoats(Player p) {
-		Board playerBoard = new Board();
-		Board enemyBoard = new Board();
-		playerBoard.makeBoard();
-		playerBoard.placeBoats();
-		p.setBoats(playerBoard.playerBoatList);
-		p.setPlayerBoard(playerBoard.map);
-		p.setHealth(playerBoard.health);
-		enemyBoard.makeBoard();
-		p.setEnemyBoard(enemyBoard.map);
+		Board board = new Board();
+		board.makeBoard();
+		board.placeBoats();
+		p.setBoats(board.playerBoatList);
+		p.setPlayerBoard(board.map);
+		p.setHealth(board.health);
+		p.setEnemyBoard(board.enemyMap);
 	}
 	
 	public void computerPlaceBoats(Player p) {
 		Board board = new Board();
-		Board enemyBoard = new Board();
 		board.makeBoard();
-		enemyBoard.makeBoard();
-		p.setEnemyBoard(enemyBoard.map);
+		p.setEnemyBoard(board.enemyMap);
 		board.computerPlaceBoats();
 		p.setBoats(board.playerBoatList);
 		p.setPlayerBoard(board.map);

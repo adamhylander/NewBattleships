@@ -115,7 +115,6 @@ public class Main {
 	}
 	
 	public void saving(int shots, int checkShots, String playerName) throws IOException {
-		
 		LinkedList<String> placeholder = new LinkedList<String>();
 		int i = checkShots + 1;
 		for(String s : highscoreList) {

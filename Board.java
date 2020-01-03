@@ -4,7 +4,8 @@ import java.util.*;
 
 public class Board {
 	LinkedHashMap<Coordinates, Pieces> map = new LinkedHashMap<Coordinates, Pieces>();
-	LinkedList<Boats> playerBoatList = new LinkedList<Boats>();
+	LinkedHashMap<Coordinates, Pieces> enemyMap = new LinkedHashMap<Coordinates, Pieces>();
+	List<Boats> playerBoatList = new ArrayList<Boats>();
 	int health = 0;
 	final int boardSize = 10;
 	Scanner scan = new Scanner(System.in);
@@ -18,6 +19,7 @@ public class Board {
 			for (int xAxis = 0; xAxis < boardSize; xAxis++) {
 				keys = "" + K + xAxis;
 				map.put(new Coordinates(keys), new Pieces ('~'));
+				enemyMap.put(new Coordinates(keys), new Pieces ('~'));
 			}
 		K++;
 		}

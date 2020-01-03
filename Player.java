@@ -7,11 +7,11 @@ public class Player {
 	int turn;
 	int health;
 	String nickname;
-	LinkedList<Boats> playerBoats;
+	List<Boats> playerBoats;
 	LinkedHashMap<Coordinates, Pieces> playerBoard;
 	LinkedHashMap<Coordinates, Pieces> enemyBoard;
 	
-	public Player(int turn, int health, String nickname, int shots, LinkedHashMap<Coordinates, Pieces> playerBoard, LinkedHashMap<Coordinates, Pieces> enemyBoard, LinkedList<Boats> playerBoats) {
+	public Player(int turn, int health, String nickname, int shots, LinkedHashMap<Coordinates, Pieces> playerBoard, LinkedHashMap<Coordinates, Pieces> enemyBoard, List<Boats> playerBoats) {
 		this.turn = turn;
 		this.health = health;
 		this.nickname = nickname;
@@ -49,11 +49,11 @@ public class Player {
 		this.shots = shots;
 	}
 	
-	public LinkedList<Boats> getBoats() {
+	public List<Boats> getBoats() {
 		return playerBoats;
 	}
 	
-	public void setBoats(LinkedList<Boats> b) {
+	public void setBoats(List<Boats> b) {
 		this.playerBoats = b;
 	}
 	
