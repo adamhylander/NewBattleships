@@ -76,7 +76,7 @@ public class Main {
 				break;
 				
 				default:
-					System.out.println("Please type another number u dumbo");
+					System.out.println("\nPlease type another number u dumbo\n");
 				break;
 			}
 			
@@ -84,15 +84,22 @@ public class Main {
 	}
 	
 	private static int showMenu() {
-		System.out.println("     Battleships!     ");
-		System.out.println("======================");
-		System.out.println("1. Play Versus Friends");
-		System.out.println("2. Play Versus Bots   ");
-		System.out.println("3. Show Highscores    ");
-		System.out.println("4. Rules              ");
-		System.out.println("5. Quit               ");
+		System.out.println("         Battleships!       ");
+		System.out.println("============================");
+		System.out.println("|| 1. Play Versus Friends ||");
+		System.out.println("|| 2. Play Versus Bots    ||");
+		System.out.println("|| 3. Show Highscores     ||");
+		System.out.println("|| 4. Rules               ||");
+		System.out.println("|| 5. Quit                ||");
+		System.out.println("============================");
+		int choice = 0;
 		
-		int choice = scan.nextInt();
+		try {
+			choice = scan.nextInt();	
+		} 
+		catch(InputMismatchException error) {
+			scan.nextLine();
+		}
 		
 		return choice;
 

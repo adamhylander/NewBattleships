@@ -15,9 +15,17 @@ public class Game {
 	Board boardMethods = new Board();
 	
 	public void PvP() {
-		System.out.println("How many would like to play? Max is 4");
-		int input = scan.nextInt();
-		amountOfPlayers = input;
+		while(amountOfPlayers < 2) {
+			try {
+				System.out.println("How many would like to play?");
+				amountOfPlayers = scan.nextInt();	
+			
+			} 
+			catch(InputMismatchException error) {
+				System.out.println("Ange ett heltal");
+				scan.nextLine();
+			}
+		}
 		createPlayer(amountOfPlayers);
 		Boats.printBoatList(Boats.boats);
 		for(Player p : players) {
@@ -48,9 +56,18 @@ public class Game {
 	
 	public void PvE() {
 		createPlayer(1);
-		System.out.println("How many bots do you want to play against? Max is 3");
-		int input = scan.nextInt();
-		amountOfPlayers = input + 1;
+		while(amountOfPlayers < 1) {
+			try {
+				System.out.println("How many bots would you like to verse?");
+				amountOfPlayers = scan.nextInt();	
+			
+			} 
+			catch(InputMismatchException error) {
+				System.out.println("Ange ett heltal");
+				scan.nextLine();
+			}
+		}
+		amountOfPlayers = amountOfPlayers + 1;
 		for(int i = 2; i <= amountOfPlayers; i++) {
 			String datorNamn = "Göran " + (i - 1);
 			Player computerPlayer = new Player(i, 0, datorNamn, 0, null, null,null); 
@@ -61,16 +78,11 @@ public class Game {
 			if(p.getTurn() == 1) {
 				System.out.println("Randomize board? y/n");
 				String answer = scan.next();
-				if(answer.equals("y")) {
-					computerPlaceBoats(p);
-				}
-				else {
-					playerPlaceBoats(p);
-				}
+				if(answer.equals("y")) computerPlaceBoats(p);
+				else playerPlaceBoats(p);
 			}
-			else {
-				computerPlaceBoats(p);
-			}
+			else computerPlaceBoats(p);
+			
 			totalHealth = p.getHealth();
 		}
 		printPlayerList();
