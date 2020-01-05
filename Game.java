@@ -203,7 +203,7 @@ public class Game {
 		System.out.println("Where would you like to shoot " + p.getNickname() + "?");
 		String playerAim = scan.next();
 		System.out.println();
-		while(onBoard(playerAim) == false) {
+		while(boardMethods.onBoard(playerAim) == false) {
 			System.out.println("Please fire on the board");
 			playerAim = scan.next();
 			System.out.println();
@@ -369,19 +369,6 @@ public class Game {
 		}
 		
 		System.out.println("\n"); 
-	}
-	
-	public boolean onBoard(String coordinates) {
-		if(coordinates.charAt(0) < 'A' || coordinates.charAt(0) > 'J') {
-			return false;
-		}
-		if(coordinates.charAt(1) < '0' || coordinates.charAt(1) > '9') {
-			return false;
-		}
-		if(String.valueOf(coordinates).length() != 2) {
-			return false;
-		}
-		return true;
 	}
 	
 	public Player getWinner() {
