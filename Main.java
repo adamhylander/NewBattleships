@@ -4,18 +4,21 @@ import java.io.*;
 import java.util.*;
 public class Main {
 	
+	//Deklarerar scanner och en sparad lista för highscores 
 	static Scanner scan = new Scanner(System.in);	
 	LinkedList<String> highscoreList = new LinkedList<String>();
-	LinkedList<Integer> scores = new LinkedList<Integer>();
 	
+	//Constructor som skapar nytt main-objekt och som kör metoden menu
 	public static void main(String[] args) throws IOException {
 		Main main = new Main();
 		main.menu();
 	}
 	
+	//Metod menu som visar menyn, körs varje gång spelet startar
 	public void menu() throws IOException {
 		
-		InputStream highscores = new FileInputStream ("/Users/adam/eclipse-workspace/battleships/src/battleships/highscores.txt");
+		//Läser in filen över highscores från en sparad fil
+		InputStream highscores = new FileInputStream ("/Users/carwi283/Downloads/NewBattleships-master/battleships/highscores.txt");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(highscores));
 	    while (reader.ready()) {
 	    	String line = reader.readLine();
@@ -25,30 +28,34 @@ public class Main {
 	    }
 	    reader.close();
 	    
-		int a = 0;
+	    //De olika menyvalen där "choice" är användarens val
+		int choice = 0;
 		
-		while (a != 5) {
-			a = showMenu();
-			switch(a) {
+		while (choice != 5) {
+			choice = showMenu();
+			switch(choice) {
+				//Startar nytt spel mot kompisar på samma dator, och ser om man passar in på high score-listan vid spelets slut
 				case 1:	
 					Game vsFriend = new Game();
 					vsFriend.PvP();
 					Player p = vsFriend.getWinner();
 					String playerName = p.getNickname();
 					int shots = p.getShots();
-					int checkShots = checkHighscoreList(shots);
-					if(checkShots > 0) {
+					int scorePlace = checkHighscoreList(shots);
+					if(scorePlace > 0) {
 						System.out.println("\n" + "Congratulations! You made the highscore list!");
-						saving(shots, checkShots, playerName);
+						saving(shots, scorePlace, playerName);
 					}
 					System.out.println();
 				break;
 				
+				//Startar nytt spel mot bottar
 				case 2:
 					Game vsBot = new Game();
 					vsBot.PvE();
 				break;
-			
+				
+				//Skriver ut allt som finns på highscore-listan
 				case 3:
 					System.out.println();
 					for(String s : highscoreList) {
@@ -57,6 +64,7 @@ public class Main {
 					System.out.println();
 				break;
 				
+				//Skriver ut spelets regler
 				case 4:
 					System.out.println("\n");
 					System.out.println("Rules:");
@@ -70,11 +78,13 @@ public class Main {
 					System.out.println("\n");
 				break;
 			
+				//Avslutar spel
 				case 5:
 					System.out.println("Thank you for playing");
 					System.exit(0);
 				break;
 				
+				//Om användaren skriver in en annan siffra eller en bokstav än vad som finns i menyn
 				default:
 					System.out.println("\nPlease type another number u dumbo\n");
 				break;
@@ -83,6 +93,7 @@ public class Main {
 		}
 	}
 	
+	//Visar menyn samt deklarerar variabeln choice som är användarens menyval
 	private static int showMenu() {
 		System.out.println("         Battleships!       ");
 		System.out.println("============================");
@@ -92,6 +103,7 @@ public class Main {
 		System.out.println("|| 4. Rules               ||");
 		System.out.println("|| 5. Quit                ||");
 		System.out.println("============================");
+			
 		int choice = 0;
 		
 		try {
@@ -105,6 +117,7 @@ public class Main {
 
 	}
 	
+	//Metod som returnerar placeringen på highscore-listan beroende på spelarens resultat
 	public int checkHighscoreList(int shots) {
 		
 		int scorePlace = 1;
@@ -121,38 +134,50 @@ public class Main {
 		return 0;
 	}
 	
-	public void saving(int shots, int checkShots, String playerName) throws IOException {
+	//Lägger till ny spelare på high score-listan
+	public void saving(int shots, int scorePlace, String playerName) throws IOException {
 		LinkedList<String> placeholder = new LinkedList<String>();
-		int i = checkShots + 1;
+		int i = scorePlace + 1;
+		//Undersöker vilken plats resultatet ska ligga på highscore-listan
 		for(String s : highscoreList) {
-			if(checkShots + 48 > s.charAt(0)) {
+			if(scorePlace + 48 > s.charAt(0)) { //Eftersom scorePlace är en integer måste vi addera 48 då s.charAt(0) är en char och utgår från ASCII-table
 				placeholder.add(s);
 				continue;
 			}
-			if(checkShots + 48 == s.charAt(0)) {
-				placeholder.add(checkShots + ". Name: " + playerName + ", Missiles Fired: " + shots);
+			String[] splitLine = s.split(":");
+			//Lägger in resultatet på den plats den ska ligga på
+			if(scorePlace + 48 == s.charAt(0)) {
+				placeholder.add(scorePlace + ". Name: " + playerName + ", Missiles Fired: " + shots);
+				placeholder.add(i + ". Name:" + splitLine[1] + ":" + splitLine[2]);
 				continue;
 			}
-			String[] splitLine = s.split(":");
-			placeholder.add(i + ". Name:" + splitLine[1] + ":" + splitLine[2]);
+			//Lägger in resultaten som är kvar och som ska ligga efter det nya resultatet
 			i++;
+			if(i == 10) break;
+			placeholder.add(i + ". Name:" + splitLine[1] + ":" + splitLine[2]);
 		}
 		
+		//Tömmer den nuvarande highscore-listan
 		highscoreList.clear();
 		
-		for(String s : placeholder) {
-			highscoreList.add(s);
-		}
+		highscoreList = placeholder;
 		
+		//Lägger in allt i den tillfälliga listan placeholder till highscore-listan
+//		for(String s : placeholder) {
+//			highscoreList.add(s);
+//		}
+//		
+		//Skriver ut highscore-listan
 		for(String s : highscoreList) {
 			System.out.println(s);
 			
 		}
-		
-		OutputStream spara = new FileOutputStream ("/Users/adam/eclipse-workspace/battleships/src/battleships/highscores.txt", false);
+		//Sparar nya highscore-listan 
+		OutputStream spara = new FileOutputStream ("/Users/carwi283/Downloads/NewBattleships-master/battleships/highscores.txt", false);
 		saveHighscore(spara);
 	}
 	
+	//Metod som används för att spara input till en fil
 	public void saveHighscore(OutputStream os) throws IOException {
 		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(os);
 		for(String s : highscoreList) {

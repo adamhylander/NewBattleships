@@ -2,18 +2,24 @@ package battleships;
 
 import java.util.*;
 
+//Class som skriver ut spelarens spelbräde
 public class Board {
+	
+	//Deklarerar listor till spelbrädena och variabler som kommer användas
 	LinkedHashMap<Coordinates, Pieces> map = new LinkedHashMap<Coordinates, Pieces>();
 	LinkedHashMap<Coordinates, Pieces> enemyMap = new LinkedHashMap<Coordinates, Pieces>();
 	List<Boats> playerBoatList = new ArrayList<Boats>();
 	int health = 0;
-	final int boardSize = 10;
+	final int boardSize = 10; //Maximala storlek på brädet, maximalt 10 rutor åt vardera håll (x och y-axel)
 	Scanner scan = new Scanner(System.in);
 	
+	//Metod som skapar spelbräde
 	public void makeBoard() {
-		char K = 'A';
+		char K = 'A'; //Y-axeln börjar på bokstav A
 		String keys = "";
 		
+		//För varje rad på y-axeln som är mindre än 10, lägger den till alla rutor med nästa bokstav i x-led
+		//Lägger in dessa i listorna map och enemyMap om den ska skapa flera spelbräden
 		for (int yAxis = 0; yAxis < boardSize; yAxis++) {
 			
 			for (int xAxis = 0; xAxis < boardSize; xAxis++) {
@@ -25,6 +31,7 @@ public class Board {
 		}
 	}
 	
+	//Metod som printar spelbrädet med tillhörande siffror och bokstäver
 	public void printBoard() {
 				
 			System.out.println("\n" + "  | 0 1 2 3 4 5 6 7 8 9");
@@ -50,11 +57,13 @@ public class Board {
 		
 	}
 	
+	//Metod för att placera ut båtar på brädet
 	public void addBoatToBoard(String coordinates, boolean alignment, int size, String name) {
 		char yCoord = coordinates.charAt(0);
 		int xCoord = coordinates.charAt(1);
 		LinkedList<Coordinates>  boatCoordinates = new LinkedList<Coordinates>();
 		Pieces boatPiece = new Pieces('#');
+		
 		
 		if (alignment == true) { 
 			int boatLength = size + xCoord; 
@@ -180,6 +189,7 @@ public class Board {
 		return true;
 	}
 	
+	//Metod som undersöker om spelaren skjuter på brädet
 	public boolean onBoard(String coordinates) {
 		if(coordinates.charAt(0) < 'A' || coordinates.charAt(0) > 'J') {
 			return false;
@@ -201,6 +211,7 @@ public class Board {
 		}
 	}
 	
+	//Metod som placerar ut båtarna
 	public void placeBoats() {
 		printBoard();
 		for(Boats boats : Boats.boats) {
@@ -209,6 +220,10 @@ public class Board {
 			
 			System.out.println("h/v?");
 			String boatAlignment = scan.nextLine();
+			while(!(boatAlignment.equals("h") || boatAlignment.equals("v"))) {
+				System.out.println("h/v?");
+				boatAlignment = scan.nextLine();
+			}
 			
 			while (checkBoard(boatPosition, position(boatAlignment), boats.getSize()) != true || onBoard(boatPosition) != true) {
 				System.out.println("Where would you like to place " + boats.getName() + "?");
@@ -222,6 +237,7 @@ public class Board {
 		}
 	}
 	
+	//Metod som placerar ut båtarna på slumpmässiga koordinater
 	public void computerPlaceBoats() {
 		for(Boats boats : Boats.boats) {
 			String boatPosition = getRandomCoordinate();
@@ -236,6 +252,7 @@ public class Board {
 		}
 	}
 	
+	//Metod som returnerar en slumpmässig koordinat
 	public String getRandomCoordinate(){
 		double xmin = 0;
 		double xmax = 9;
@@ -250,6 +267,8 @@ public class Board {
 		return coordinate;
 	}
 	
+	//50/50 boolean. Math.random() genererar en double mellan 0 och 1, beroende på om den är över
+	//eller under 0.5 returnerar den true eller false.
 	public boolean getRandomAlignment() {
 		return Math.random() < 0.5;
 	}

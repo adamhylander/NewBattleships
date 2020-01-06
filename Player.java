@@ -11,6 +11,7 @@ public class Player {
 	LinkedHashMap<Coordinates, Pieces> playerBoard;
 	LinkedHashMap<Coordinates, Pieces> enemyBoard;
 	
+	//Constructor som sätter de variabler som skickats in till lokala variabler
 	public Player(int turn, int health, String nickname, int shots, LinkedHashMap<Coordinates, Pieces> playerBoard, LinkedHashMap<Coordinates, Pieces> enemyBoard, List<Boats> playerBoats) {
 		this.turn = turn;
 		this.health = health;
@@ -20,6 +21,8 @@ public class Player {
 		this.playerBoard = playerBoard;
 		this.enemyBoard = enemyBoard;
 	}
+	
+	//Metoder nedan returnerar värdet för olika variabler och tilldelar värden till variabler
 	
 	public String getNickname() {
 		return nickname;
