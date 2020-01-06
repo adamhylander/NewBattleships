@@ -84,6 +84,7 @@ public class Game {
 				scan.nextLine();
 			}
 		}
+		//Här skapar vi bottarna, anledningen till varför det är amountOfPlayers plus 1 är för enklare kunna använda generella metoder
 		amountOfPlayers = amountOfPlayers + 1;
 		for(int i = 2; i <= amountOfPlayers; i++) {
 			String datorNamn = "Göran " + (i - 1);
@@ -112,8 +113,8 @@ public class Game {
 			}
 			totalHealth = p.getHealth();
 		}
-		//Skriver ut vilka som spelar samt kör spelet mot bottar (PvETurn)
 		printPlayerList();
+		//Medan det finns fler än en spelare kvar, fortsätter spelet
 		while(amountOfPlayers > 1) {
 			PvETurn();
 		}
@@ -159,20 +160,10 @@ public class Game {
 		p.setPlayerBoard(board.map);
 		p.setHealth(board.health);
 	}
-	
-	//Räknar hur många gånger varje spelare har skjutit på motståndarens bräde
-	//Räknar ut pricksäkerhet och hur mycket "liv" spelaren har kvar
+
 	public void PvPTurn() {
 		if(turnCounter == 1 && amountOfTurns > 0) {
-			for(Player p : players) {
-				int hitQuota = (100 - (100 * (amountOfPlayers - 1) * amountOfTurns)/p.getShots());
-				float healthDenominator = (float)(totalHealth);
-				float healthNominator = (float) (p.getHealth() * 100);
-				int healthQuota = (int) (healthNominator/healthDenominator);
-				System.out.println(p.getNickname() + "'s Accuracy: " + hitQuota + "%");
-				System.out.println(p.getNickname() + "'s Health: " + healthQuota + "%\n");
-				System.out.println();
-			}
+				playerStats();
 		}
 		
 		//Nästa spelares tur, skriver ut spelbräden
@@ -184,7 +175,7 @@ public class Game {
 			}
 		}
 		
-		//Spelaren får fortsätta skjuta tills den missar. Hoppar då ur whileloopen som blir false
+		//Spelaren får fortsätta skjuta på alla andras enemyBoard tills den missar. Hoppar då ur whileloopen som blir false
 		for(Player p : players) {
 			if(p.getTurn() != turnCounter) {
 				while (playerAim(p) == true);
@@ -200,22 +191,22 @@ public class Game {
 		}
 		
 	}
-	
-	//Räknar hur många gånger varje spelare har skjutit på motståndarens bräde
-	//Räknar ut pricksäkerhet och hur mycket "liv" spelaren har kvar
-	public void PvETurn() {
-		if(amountOfTurns > 0) {
+	//Räknar hur många gånger varje spelare hur mycket av båtarna som är kvar samt varje spelares träffsäkerhet
+	public void playerStats() {
 		for(Player p : players) {
 			int hitQuota = (100 - (100 * (amountOfPlayers - 1) * amountOfTurns)/p.getShots());
-				
 			float healthDenominator = (float)(totalHealth);
 			float healthNominator = (float) (p.getHealth() * 100);
 			int healthQuota = (int) (healthNominator/healthDenominator);
-			
 			System.out.println(p.getNickname() + "'s Accuracy: " + hitQuota + "%");
 			System.out.println(p.getNickname() + "'s Health: " + healthQuota + "%\n");
 			System.out.println();
 		}
+	}
+	
+	public void PvETurn() {
+		if(amountOfTurns > 0) {
+			playerStats();
 		}
 		
 		//Nästa spelares tur, skriver ut spelbräden
@@ -227,7 +218,7 @@ public class Game {
 			}
 		}
 		
-		//?????
+		//Spelaren får fortsätta spela tills den missar
 		for(Player p : players) {	
 			if(p.getTurn() != 1) {
 				while (playerAim(p) == true);
@@ -256,7 +247,7 @@ public class Game {
 		String playerAim = scan.next();
 		System.out.println();
 		//Om koordinaten inte finns på brädet får spelaren skriva ny koordinat
-		while(onBoard(playerAim) == false) {
+		while(boardMethods.onBoard(playerAim) == false) {
 			System.out.println("Please fire on the board");
 			playerAim = scan.next();
 			System.out.println();
@@ -294,13 +285,13 @@ public class Game {
 			List<Boats> newBoats = new ArrayList<Boats>();
 			
 			//Undersöker om spelaren träffade en båt på vald koordinat
-			boolean a = false;
+			boolean isHit = false;
 			for (Boats boats : p.getBoats()) {
 				for(Coordinates coordinates : boats.getBoatCoordinates()) {
 					
-					//Vid träff - blir en cirkel på vald koordinat, ett liv försvinner
+					//Vid träff - blir ett kryss på vald koordinat, ett liv försvinner
 					if(coordinates.equals(shot)) {
-						a = true;
+						isHit = true;
 						System.out.println("Hit! \n");
 						p.getPlayerBoard().put(shot, hit);
 						p.getEnemyBoard().put(shot, hit);
@@ -322,12 +313,12 @@ public class Game {
 					System.out.println("You sunk " + p.getNickname() + "'s " + boats.getName() + "\n");
 				}
 				
-				if(a == true) {
+				if(isHit == true) {
 					break;
 				}
 			}
 			
-			//Tar bort de båtar som sjunkit
+			//Tar bort de båtar som sjunkit från listan så att mängden iterationer blir färre i framtiden
 			for(Boats boats : newBoats) {
 				p.getBoats().remove(boats);
 			}
@@ -341,8 +332,9 @@ public class Game {
 				return false;
 			}
 			
-			//Om spelaren skjuter, men inte träffar, markeras missen med ett X
-			if(a == false) {
+			//Om spelaren skjuter, men inte träffar, markeras missen med ett O, oavsett miss eller träff,
+			//räknas antal skott mha shotCounter()
+			if(isHit == false) {
 				System.out.println("Miss! \n");
 				p.getPlayerBoard().put(shot, miss);
 				p.getEnemyBoard().put(shot, miss);
@@ -363,10 +355,10 @@ public class Game {
 		}
 	}
 	
-	//???????? är det beroende på vems tur det är??
 	//Skriver ut spelbrädet för varje spelare beroende på vems tur
  	public void printBoard() {
 		for(Player p : players) {
+			//Här skrivs spelarens egna bräde ut 
 			if(p.getTurn() == turnCounter) {
 				System.out.println(p.getNickname() + "'s Board");
 				System.out.println("=======================");
@@ -387,6 +379,7 @@ public class Game {
 			}
 		}
 		for(Player p : players) {
+			//Här skrivs enemy lines ut. Så man kan spåra vart man redan skjutit 
 			if(p.getTurn() != turnCounter) {
 				System.out.println(p.getNickname() + "'s lines");
 				System.out.println("=======================");
@@ -408,7 +401,7 @@ public class Game {
 		}
 	}
 	
- 	//Skriver ut spelbrädet för den/de spelare som förlorat
+ 	//Skriver ut alla spelares bräden i slutet.
 	public void gameOverPrint() {
 		for(Player p : defeatedPlayers) {
 			System.out.println(p.getNickname() + "'s Board");
@@ -440,20 +433,6 @@ public class Game {
 		}
 		
 		System.out.println("\n"); 
-	}
-	
-	//??????????????????????
-	public boolean onBoard(String coordinates) {
-		if(coordinates.charAt(0) < 'A' || coordinates.charAt(0) > 'J') {
-			return false;
-		}
-		if(coordinates.charAt(1) < '0' || coordinates.charAt(1) > '9') {
-			return false;
-		}
-		if(String.valueOf(coordinates).length() != 2) {
-			return false;
-		}
-		return true;
 	}
 	
 	//Returnerar den spelare som vann

@@ -10,31 +10,29 @@ public class Boats {
 	String name;
 	int size;
 	List<Coordinates>  boatCoordinates;
+	//Instansierar en lista med specifika båtar
 	static List<Boats> boats = Arrays.asList(
-//			(new Boats("Carrier", carrierSize, null)), 
-//			(new Boats("Battleship 1", battleshipSize, null)), 
-//			(new Boats("Battleship 2", battleshipSize, null)),
-//			(new Boats("Cruiser 1", cruiserSize, null)),
-//			(new Boats("Cruiser 2", cruiserSize, null)),
-//			(new Boats("Destroyer 1", destroyerSize, null)), 
+			(new Boats("Carrier", carrierSize, null)), 
+			(new Boats("Battleship 1", battleshipSize, null)), 
+			(new Boats("Battleship 2", battleshipSize, null)),
+			(new Boats("Cruiser 1", cruiserSize, null)),
+			(new Boats("Cruiser 2", cruiserSize, null)),
+			(new Boats("Destroyer 1", destroyerSize, null)), 
 			(new Boats("Destroyer 2", destroyerSize, null)), 
 			(new Boats("Destroyer 3", destroyerSize, null)));
 
-	public Boats(String name, int size, LinkedList<Coordinates> boatCoordinates) {
+	public Boats(String name, int size, List<Coordinates> boatCoordinates) {
 		this.name = name;
 		this.size = size;
 		this.boatCoordinates = boatCoordinates;
 	}
 	
 	public String toString() {
-		if(this.boatCoordinates == null) {
 			return ("Name: " + this.name + ", Size: " + this.size);	
-		}
-		else {
-			return this.boatCoordinates.toString();
-		}
 	}
 		
+	// Setters and getters down below
+	
 	public String getName() {
 		return name;
 	}
