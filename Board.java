@@ -2,7 +2,7 @@ package battleships;
 
 import java.util.*;
 
-//Class som skriver ut spelarens spelbräde
+//Class som skapar ett spelbräde och motståndarbräde för varje spelare.
 public class Board {
 
 	// Deklarerar listor till spelbrädena och variabler som kommer användas
@@ -32,8 +32,9 @@ public class Board {
 		}
 	}
 
-	//Metod som printar spelbrädet med tillhörande siffror och bokstäver, och uppdateras allt
-	//eftersom man lägger till båtar.
+	// Metod som printar spelbrädet med tillhörande siffror och bokstäver, och
+	// uppdateras allt
+	// eftersom man lägger till båtar.
 	public void printBoard() {
 
 		System.out.println("\n" + "  | 0 1 2 3 4 5 6 7 8 9");
@@ -59,7 +60,8 @@ public class Board {
 
 	}
 
-	// Metod för att placera ut båtar på brädet samt även lägga in koordinaterna för varje båt i objektet Boats lista.
+	// Metod för att placera ut båtar på brädet samt även lägga in koordinaterna för
+	// varje båt i objektet Boats lista.
 	public void addBoatToBoard(String coordinates, boolean alignment, int size, String name) {
 		char yCoord = coordinates.charAt(0);
 		int xCoord = coordinates.charAt(1);
@@ -108,8 +110,9 @@ public class Board {
 
 		playerBoatList.add(new Boats(name, size, boatCoordinates));
 	}
-	
-	//Undersöker om det ligger någon båt inom 1 ruta från där man vill placera en ny båt.
+
+	// Undersöker om det ligger någon båt inom 1 ruta från där man vill placera en
+	// ny båt.
 	public boolean checkBoard(String coordinates, boolean alignment, int size) {
 
 		char yCoordStart = (char) (coordinates.charAt(0) - 1);
@@ -123,8 +126,8 @@ public class Board {
 		}
 
 		if (alignment == true) {
-			//Om båten placeras på ett sådant sätt att båten skulle ligga utanför brädet,
-			//returnerar vi false
+			// Om båten placeras på ett sådant sätt att båten skulle ligga utanför brädet,
+			// returnerar vi false
 			if (coordinates.charAt(1) + size - 48 > 10) {
 				return false;
 			}
@@ -158,8 +161,8 @@ public class Board {
 
 			}
 		} else {
-			//Om båten placeras på ett sådant sätt att båten skulle ligga utanför brädet,
-			//returnerar vi false
+			// Om båten placeras på ett sådant sätt att båten skulle ligga utanför brädet,
+			// returnerar vi false
 			if (size + coordinates.charAt(0) - 65 > 10) {
 				return false;
 			}

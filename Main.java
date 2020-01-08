@@ -160,13 +160,9 @@ public class Main {
 		//Tömmer den nuvarande highscore-listan
 		highscoreList.clear();
 		
-		highscoreList = placeholder;
-		
 		//Lägger in allt i den tillfälliga listan placeholder till highscore-listan
-//		for(String s : placeholder) {
-//			highscoreList.add(s);
-//		}
-//		
+		highscoreList = placeholder;
+	
 		//Skriver ut highscore-listan
 		for(String s : highscoreList) {
 			System.out.println(s);
