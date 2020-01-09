@@ -7,12 +7,12 @@ public class Player {
 	int turn;
 	int health;
 	String nickname;
-	List<Boats> playerBoats;
-	LinkedHashMap<Coordinates, Pieces> playerBoard;
-	LinkedHashMap<Coordinates, Pieces> enemyBoard;
+	List<Boat> playerBoats;
+	LinkedHashMap<Coordinate, Piece> playerBoard;
+	LinkedHashMap<Coordinate, Piece> enemyBoard;
 	
 	//Constructor som sätter de variabler som skickats in till lokala variabler
-	public Player(int turn, int health, String nickname, int shots, LinkedHashMap<Coordinates, Pieces> playerBoard, LinkedHashMap<Coordinates, Pieces> enemyBoard, List<Boats> playerBoats) {
+	public Player(int turn, int health, String nickname, int shots, LinkedHashMap<Coordinate, Piece> playerBoard, LinkedHashMap<Coordinate, Piece> enemyBoard, List<Boat> playerBoats) {
 		this.turn = turn;
 		this.health = health;
 		this.nickname = nickname;
@@ -52,27 +52,27 @@ public class Player {
 		this.shots = shots;
 	}
 	
-	public List<Boats> getBoats() {
+	public List<Boat> getBoats() {
 		return playerBoats;
 	}
 	
-	public void setBoats(List<Boats> b) {
+	public void setBoats(List<Boat> b) {
 		this.playerBoats = b;
 	}
 	
-	public LinkedHashMap<Coordinates, Pieces> getPlayerBoard() {
+	public LinkedHashMap<Coordinate, Piece> getPlayerBoard() {
 		return playerBoard;
 	}
 	
-	public void setPlayerBoard (LinkedHashMap<Coordinates,Pieces> playerBoard) {
+	public void setPlayerBoard (LinkedHashMap<Coordinate,Piece> playerBoard) {
 		this.playerBoard = playerBoard;
 	}
 	
-	public LinkedHashMap<Coordinates, Pieces> getEnemyBoard() {
+	public LinkedHashMap<Coordinate, Piece> getEnemyBoard() {
 		return enemyBoard;
 	}
 	
-	public void setEnemyBoard (LinkedHashMap<Coordinates,Pieces> enemyBoard) {
+	public void setEnemyBoard (LinkedHashMap<Coordinate,Piece> enemyBoard) {
 		this.enemyBoard = enemyBoard;
 	}
 	

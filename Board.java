@@ -6,9 +6,9 @@ import java.util.*;
 public class Board {
 
 	// Deklarerar listor till spelbrädena och variabler som kommer användas
-	LinkedHashMap<Coordinates, Pieces> map = new LinkedHashMap<Coordinates, Pieces>();
-	LinkedHashMap<Coordinates, Pieces> enemyMap = new LinkedHashMap<Coordinates, Pieces>();
-	List<Boats> playerBoatList = new ArrayList<Boats>();
+	LinkedHashMap<Coordinate, Piece> map = new LinkedHashMap<Coordinate, Piece>();
+	LinkedHashMap<Coordinate, Piece> enemyMap = new LinkedHashMap<Coordinate, Piece>();
+	List<Boat> playerBoatList = new ArrayList<Boat>();
 	int health = 0;
 	final int boardSize = 10; // Maximala storlek på brädet, maximalt 10 rutor åt vardera håll (x och y-axel)
 	Scanner scan = new Scanner(System.in);
@@ -25,8 +25,8 @@ public class Board {
 
 			for (int xAxis = 0; xAxis < boardSize; xAxis++) {
 				keys = "" + K + xAxis;
-				map.put(new Coordinates(keys), new Pieces('~'));
-				enemyMap.put(new Coordinates(keys), new Pieces('~'));
+				map.put(new Coordinate(keys), new Piece('~'));
+				enemyMap.put(new Coordinate(keys), new Piece('~'));
 			}
 			K++;
 		}
@@ -42,7 +42,7 @@ public class Board {
 
 		char k = 'A';
 
-		for (Coordinates keys : map.keySet()) {
+		for (Coordinate keys : map.keySet()) {
 
 			if (keys.toString().charAt(1) == '0') {
 				System.out.print(k + " | ");
@@ -62,15 +62,15 @@ public class Board {
 
 	// Metod för att placera ut båtar på brädet samt även lägga in koordinaterna för
 	// varje båt i objektet Boats lista.
-	public void addBoatToBoard(String coordinates, boolean alignment, int size, String name) {
-		char yCoord = coordinates.charAt(0);
-		int xCoord = coordinates.charAt(1);
-		LinkedList<Coordinates> boatCoordinates = new LinkedList<Coordinates>();
-		Pieces boatPiece = new Pieces('#');
+	public void addBoatToBoard(String Coordinate, boolean alignment, int size, String name) {
+		char yCoord = Coordinate.charAt(0);
+		int xCoord = Coordinate.charAt(1);
+		LinkedList<Coordinate> boatCoordinate = new LinkedList<Coordinate>();
+		Piece boatPiece = new Piece('#');
 
 		if (alignment == true) {
 			int boatLength = size + xCoord;
-			for (Coordinates keys : map.keySet()) {
+			for (Coordinate keys : map.keySet()) {
 
 				if (xCoord == boatLength) {
 					break;
@@ -79,8 +79,8 @@ public class Board {
 				String checkKeys = keys.toString();
 
 				if ((checkKeys.charAt(0) == yCoord) && (keys.toString().charAt(1) == xCoord)) {
-					map.put(new Coordinates(checkKeys), boatPiece);
-					boatCoordinates.add(new Coordinates(checkKeys));
+					map.put(new Coordinate(checkKeys), boatPiece);
+					boatCoordinate.add(new Coordinate(checkKeys));
 					health++;
 					xCoord++;
 				}
@@ -89,7 +89,7 @@ public class Board {
 		} else {
 			int lengthCounter = 0;
 
-			for (Coordinates keys : map.keySet()) {
+			for (Coordinate keys : map.keySet()) {
 
 				if (size == lengthCounter) {
 					break;
@@ -98,8 +98,8 @@ public class Board {
 				String checkKeys = keys.toString();
 
 				if ((checkKeys.charAt(0) == yCoord) && (keys.toString().charAt(1) == xCoord)) {
-					map.put(new Coordinates(checkKeys), boatPiece);
-					boatCoordinates.add(new Coordinates(checkKeys));
+					map.put(new Coordinate(checkKeys), boatPiece);
+					boatCoordinate.add(new Coordinate(checkKeys));
 					health++;
 					yCoord++;
 					lengthCounter++;
@@ -108,31 +108,31 @@ public class Board {
 
 		}
 
-		playerBoatList.add(new Boats(name, size, boatCoordinates));
+		playerBoatList.add(new Boat(name, size, boatCoordinate));
 	}
 
 	// Undersöker om det ligger någon båt inom 1 ruta från där man vill placera en
 	// ny båt.
-	public boolean checkBoard(String coordinates, boolean alignment, int size) {
+	public boolean checkBoard(String Coordinate, boolean alignment, int size) {
 
-		char yCoordStart = (char) (coordinates.charAt(0) - 1);
-		char xCoordStart = (char) (coordinates.charAt(1) - 1);
+		char yCoordStart = (char) (Coordinate.charAt(0) - 1);
+		char xCoordStart = (char) (Coordinate.charAt(1) - 1);
 
-		if (coordinates.charAt(1) == '0') {
+		if (Coordinate.charAt(1) == '0') {
 			xCoordStart = '0';
 		}
-		if (coordinates.charAt(0) == 'A') {
+		if (Coordinate.charAt(0) == 'A') {
 			yCoordStart = 'A';
 		}
 
 		if (alignment == true) {
 			// Om båten placeras på ett sådant sätt att båten skulle ligga utanför brädet,
 			// returnerar vi false
-			if (coordinates.charAt(1) + size - 48 > 10) {
+			if (Coordinate.charAt(1) + size - 48 > 10) {
 				return false;
 			}
 
-			for (Coordinates keys : map.keySet()) {
+			for (Coordinate keys : map.keySet()) {
 				String check = "" + yCoordStart + xCoordStart;
 
 				if (check.equals(keys.toString()) || xCoordStart == 58) {
@@ -143,7 +143,7 @@ public class Board {
 
 					xCoordStart++;
 
-					if (xCoordStart == size + coordinates.charAt(1) + 1) {
+					if (xCoordStart == size + Coordinate.charAt(1) + 1) {
 						yCoordStart++;
 						for (int i = 0; i < size + 2; i++) {
 							if (xCoordStart == '0') {
@@ -155,7 +155,7 @@ public class Board {
 
 				}
 
-				if (yCoordStart == (char) (coordinates.charAt(0) + 2)) {
+				if (yCoordStart == (char) (Coordinate.charAt(0) + 2)) {
 					break;
 				}
 
@@ -163,10 +163,10 @@ public class Board {
 		} else {
 			// Om båten placeras på ett sådant sätt att båten skulle ligga utanför brädet,
 			// returnerar vi false
-			if (size + coordinates.charAt(0) - 65 > 10) {
+			if (size + Coordinate.charAt(0) - 65 > 10) {
 				return false;
 			}
-			for (Coordinates keys : map.keySet()) {
+			for (Coordinate keys : map.keySet()) {
 				String check = "" + yCoordStart + xCoordStart;
 
 				if (check.equals(keys.toString()) || xCoordStart == 58) {
@@ -176,7 +176,7 @@ public class Board {
 
 					xCoordStart++;
 
-					if (xCoordStart == (char) (coordinates.charAt(1) + 2)) {
+					if (xCoordStart == (char) (Coordinate.charAt(1) + 2)) {
 						yCoordStart++;
 						for (int i = 0; i < 3; i++) {
 							if (xCoordStart == '0') {
@@ -188,7 +188,7 @@ public class Board {
 
 				}
 
-				if (yCoordStart == (char) (coordinates.charAt(0) + size + 1) || yCoordStart == 'K') {
+				if (yCoordStart == (char) (Coordinate.charAt(0) + size + 1) || yCoordStart == 'K') {
 					break;
 				}
 			}
@@ -199,14 +199,14 @@ public class Board {
 	}
 
 	// Metod som undersöker om spelaren skjuter på brädet
-	public boolean onBoard(String coordinates) {
-		if (coordinates.charAt(0) < 'A' || coordinates.charAt(0) > 'J') {
+	public boolean onBoard(String Coordinate) {
+		if (Coordinate.charAt(0) < 'A' || Coordinate.charAt(0) > 'J') {
 			return false;
 		}
-		if (coordinates.charAt(1) < '0' || coordinates.charAt(1) > '9') {
+		if (Coordinate.charAt(1) < '0' || Coordinate.charAt(1) > '9') {
 			return false;
 		}
-		if (String.valueOf(coordinates).length() != 2) {
+		if (String.valueOf(Coordinate).length() != 2) {
 			return false;
 		}
 		return true;
@@ -223,7 +223,7 @@ public class Board {
 	// Metod som placerar ut båtarna
 	public void placeBoats() {
 		printBoard();
-		for (Boats boats : Boats.boats) {
+		for (Boat boats : Boat.boats) {
 			System.out.println("Where would you like to place the " + boats.getName() + "?");
 			String boatPosition = scan.nextLine();
 
@@ -249,7 +249,7 @@ public class Board {
 
 	// Metod som placerar ut båtarna på slumpmässiga koordinater
 	public void computerPlaceBoats() {
-		for (Boats boats : Boats.boats) {
+		for (Boat boats : Boat.boats) {
 			String boatPosition = getRandomCoordinate();
 			boolean boatAlignment = getRandomAlignment();
 

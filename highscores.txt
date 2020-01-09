@@ -1,9 +1,9 @@
-1. Name: Adam1, Missiles Fired: 41
-2. Name: Adam2, Missiles Fired: 42
-3. Name: Adam3, Missiles Fired: 44
-4. Name: Adam4, Missiles Fired: 47
-5. Name: Adam5, Missiles Fired: 52
-6. Name: Adam6, Missiles Fired: 53
-7. Name: Adam7, Missiles Fired: 54
-8. Name: Adam8, Missiles Fired: 55
-9. Name: Adam9, Missiles Fired: 57
+1. Name: Adam1, Missiles Fired: 39, Lives Left: 1
+2. Name: Adam2, Missiles Fired: 42, Lives Left: 2
+3. Name: Adam3, Missiles Fired: 41, Lives Left: 3
+4. Name: Adam4, Missiles Fired: 47, Lives Left: 4
+5. Name: Adam5, Missiles Fired: 52, Lives Left: 5
+6. Name: Adam6, Missiles Fired: 53, Lives Left: 6
+7. Name: Adam7, Missiles Fired: 54, Lives Left: 7
+8. Name: Adam8, Missiles Fired: 55, Lives Left: 8
+9. Name: Adam9, Missiles Fired: 57, Lives Left: 9
