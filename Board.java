@@ -112,7 +112,10 @@ public class Board {
 	}
 
 	// Undersöker om det ligger någon båt inom 1 ruta från där man vill placera en
-	// ny båt.
+	// ny båt. Den här metoden går igenom alla värden på brädet. Vi börjar med att kolla
+	// den rutan som är överst till vänster, exempelvis om vi kolla en båt som läggs på C1,
+	// börjar vi kolla B0. Sen beroende på om båten ska ligga vertikalt eller horisontellt
+	// itererar vi lite annorlunda.
 	public boolean checkBoard(String Coordinate, boolean alignment, int size) {
 
 		char yCoordStart = (char) (Coordinate.charAt(0) - 1);
@@ -278,8 +281,7 @@ public class Board {
 	}
 
 	// 50/50 boolean. Math.random() genererar en double mellan 0 och 1, beroende på
-	// om den är över
-	// eller under 0.5 returnerar den true eller false.
+	// om den är över eller under 0.5 returnerar den true eller false.
 	public boolean getRandomAlignment() {
 		return Math.random() < 0.5;
 	}

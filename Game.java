@@ -231,6 +231,8 @@ public class Game {
 
 		turnCounter++;
 
+		// Här får alla datorerna skjuta
+		
 		while (!(turnCounter > amountOfPlayers)) {
 			for (Player p : players) {
 				if (p.getTurn() != turnCounter) {
@@ -388,7 +390,7 @@ public class Game {
 			}
 		}
 		for (Player p : players) {
-			// Här skrivs enemy lines ut. Så man kan spåra vart man redan skjutit
+			// Här skrivs alla motståndarens tomma bräden ut
 			if (p.getTurn() != turnCounter) {
 				System.out.println(p.getNickname() + "'s lines");
 				System.out.println("=======================");
@@ -410,7 +412,7 @@ public class Game {
 		}
 	}
 
-	// Skriver ut alla spelares bräden i slutet.
+	// Skriver ut alla spelares bräden i slutet med båtarna från spelaren som vann.
 	public void gameOverPrint() {
 		for (Player p : defeatedPlayers) {
 			System.out.println(p.getNickname() + "'s Board");
@@ -432,7 +434,7 @@ public class Game {
 		}
 	}
 
-	// Skriver ut namnet på alla spelare
+	// Skriver ut namnet på alla spelare i början av spelet
 	public void printPlayerList() {
 		System.out.println("\n");
 
@@ -444,7 +446,7 @@ public class Game {
 		System.out.println("\n");
 	}
 
-	// Returnerar den spelare som vann
+	// Returnerar den spelare som vann så vi kan undersöka highscores.
 	public Player getWinner() {
 		for (Player p : players) {
 			return p;

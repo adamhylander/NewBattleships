@@ -59,7 +59,8 @@ public class Main {
 				vsBot.PvE();
 				break;
 
-			// Skriver ut allt som finns på highscore-listan
+			// Skriver ut allt som finns på highscore-listan och eftersom highscore-listan
+			// är en LinkedList kommer den alltid skriva ut från topp till botten.
 			case 3:
 				System.out.println();
 				for (String s : highscoreList) {
@@ -122,7 +123,8 @@ public class Main {
 	}
 
 	// Metod som returnerar placeringen på highscore-listan beroende på spelarens
-	// resultat
+	// resultat. Dessutom, om två spelare har samma mängd skott, så jämför den här metoden
+	// spelarnas liv. Den spelare som har flest liv av de två som jämförs hamnar högre upp på listan.
 	public int checkHighscoreList(int shots, int lives) {
 
 		int scorePlace = 1;
@@ -132,10 +134,12 @@ public class Main {
 			String[] splitLine2 = splitLine[2].split(",");
 			int recordShots = Integer.parseInt(splitLine2[0].trim());
 			int recordLives = Integer.parseInt(splitLine[3].trim());
-			if(recordLives >= lives) {
-				return scorePlace+1;
+			if (shots == recordShots) {
+				if (recordLives >= lives) {
+					return scorePlace + 1;
+				}
 			}
-			if (shots <= recordShots) {
+			if (shots < recordShots) {
 				return scorePlace;
 			}
 
@@ -144,25 +148,27 @@ public class Main {
 		return 0;
 	}
 
-	// Lägger till ny spelare på high score-listan
+	// Lägger till ny spelare på highscore-listan
 	public void saving(int shots, int scorePlace, String playerName, int lives) throws IOException {
 		LinkedList<String> placeholder = new LinkedList<String>();
 		int i = scorePlace + 1;
 		// Undersöker vilken plats resultatet ska ligga på highscore-listan
 		for (String s : highscoreList) {
-			if (scorePlace + 48 > s.charAt(0)) { // Eftersom scorePlace är en integer måste vi addera 48 då s.charAt(0)
-													// är en char och utgår från ASCII-table
+			// Eftersom scorePlace är en integer måste vi addera 48 då s.charAt(0)
+			// är en char och chars utgår från ASCII-table
+			if (scorePlace + 48 > s.charAt(0)) { 
 				placeholder.add(s);
 				continue;
 			}
 			String[] splitLine = s.split(":");
 			// Lägger in resultatet på den plats den ska ligga på
 			if (scorePlace + 48 == s.charAt(0)) {
-				placeholder.add(scorePlace + ". Name: " + playerName + ", Missiles Fired: " + shots + ", Lives Left: " + lives);
+				placeholder.add(
+						scorePlace + ". Name: " + playerName + ", Missiles Fired: " + shots + ", Lives Left: " + lives);
 				placeholder.add(i + ". Name:" + splitLine[1] + ":" + splitLine[2] + ":" + splitLine[3]);
 				continue;
 			}
-			// Lägger in resultaten som är kvar och som ska ligga efter det nya resultatet
+			// Lägger in resterande highscores under i rätt ordning.
 			i++;
 			if (i == 10)
 				break;
