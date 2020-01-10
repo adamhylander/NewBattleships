@@ -138,6 +138,7 @@ public class Main {
 				if (recordLives >= lives) {
 					return scorePlace + 1;
 				}
+				return scorePlace;
 			}
 			if (shots < recordShots) {
 				return scorePlace;
